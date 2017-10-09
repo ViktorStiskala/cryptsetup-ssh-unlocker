@@ -139,3 +139,5 @@ $ dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key
 $ sudo update-initramfs -u
 ```
 
+# License
+This software is licensed under MIT license.
