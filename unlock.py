@@ -9,18 +9,22 @@ from unlocker.client import ServerUnlocker
 from unlocker.argparser import parser
 
 
-if __name__ == '__main__':
+def main():
     args = parser.parse_args(sys.argv[1:])
 
     logger = logging.getLogger('unlocker')
     logger.setLevel(logging.DEBUG if args.verbose else logging.INFO)
     handler = logging.StreamHandler(sys.stderr) if not args.logfile else logging.FileHandler(args.logfile)
-    handler.setFormatter(logging.Formatter('%(asctime)s [%(server)s] %(message)s'))
+    handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s [%(server)s] %(message)s'))
     logger.addHandler(handler)
 
     config = configparser.ConfigParser()
     config.read(args.config)
     required_args = ('host', 'port', 'ssh_private_key', 'known_hosts', 'cryptsetup_passphrase')
+
+    if not config.sections():
+        sys.stderr.write('No servers specified in the conf file.\n')
+        sys.exit(1)
 
     for section in config.sections():
         for arg in required_args:
@@ -30,3 +34,7 @@ if __name__ == '__main__':
 
     unlocker = ServerUnlocker([config[section] for section in config.sections()])
     unlocker.run_forever()
+
+
+if __name__ == '__main__':
+    main()

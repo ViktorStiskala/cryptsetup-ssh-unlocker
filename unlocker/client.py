@@ -1,9 +1,10 @@
+import asyncio
 import logging
 
-import asyncio
 import asyncssh
 
 log = logging.getLogger('unlocker')
+
 
 class TCPHandshakeProtocol(asyncio.Protocol):
     def connection_made(self, transport):
@@ -22,9 +23,12 @@ class ServerUnlocker:
         try:
             self.loop.run_until_complete(self.tasks)
         except KeyboardInterrupt:
-            self.tasks.cancel()
-            self.loop.run_until_complete(self.tasks)
-            self.tasks.exception()
+            try:
+                self.tasks.cancel()
+                self.loop.run_until_complete(self.tasks)
+                self.tasks.exception()
+            except asyncio.CancelledError:
+                pass
         finally:
             self.loop.close()
 
@@ -56,5 +60,7 @@ class ServerUnlocker:
                 log.debug('Connection refused', extra={'server': config.name})
             except asyncio.TimeoutError:
                 log.debug('Timeout error', extra={'server': config.name})
+            except OSError as exc:
+                log.warning('Connection error: %s', exc, extra={'server': config.name})
 
             await asyncio.sleep(config.getint('sleep_interval', 2))
