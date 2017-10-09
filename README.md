@@ -1,6 +1,6 @@
 # Cryptsetup SSH unlocker
 
-Utility for unattended remote unlock of LUKS encrypted LVM/root using SSH and cryptsetup.
+Utility for unattended remote unlock of LUKS encrypted LVM/root disk partition using SSH and cryptsetup.
 Periodically polls defined servers for open SSH port, then tries to unlock the server using cryptsetup.
 Requires `dropbear` or any other SSH server which could be run from initial ramdisk.
 
