@@ -22,7 +22,7 @@ setup(
     },
     include_package_data=True,
     license='MIT',
-    description='Django session sharing across multiple domains running same application',
+    description='SSH unlocker for unattended unlock of LUKS encrypted LVM or root disk partition using cryptsetup',
     url='https://github.com/ViktorStiskala/cryptsetup-ssh-unlocker',
     author='Viktor Stískala',
     author_email='viktor@stiskala.cz',
