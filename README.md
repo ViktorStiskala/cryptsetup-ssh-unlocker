@@ -26,6 +26,23 @@ $ pip install ssh-unlocker
 
 You should be able to run the utility by using `ssh-unlocker`. Run `ssh-unlocker -h` for the list of available options.
 
+```bash
+$ ssh-unlocker -h
+usage: ssh-unlocker [-h] [-c CONFIG] [-v] [--logfile LOGFILE]
+
+Cryptsetup SSH server unlocker. This utility is repeatedly polling configured
+servers and tries to unlock the encrypted root partition using cryptsetup once
+the SSH connection is available.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c CONFIG, --config CONFIG
+                        Path to config file - defaults to config.ini
+  -v, --verbose         Increase verbosity level to DEBUG
+  --logfile LOGFILE     Path to log file. By default the log messages are
+                        printed to stderr
+```
+
 ## Configuration
 
 By default the configuration is read from `config.ini` configuration file, but this can be specified as a parameter.
