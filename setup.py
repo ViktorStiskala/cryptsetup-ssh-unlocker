@@ -13,8 +13,9 @@ if sys.version_info[:2] < (3, 5):
 setup(
     name='ssh-unlocker',
     version=__version__,
+    py_modules=['unlock'],
     packages=['unlocker'],
-    package_data={'unlocker': ['unlock.py', 'unlocker/*.py']},
+    package_data={'unlocker': ['unlocker/*.py']},
     entry_points={
         'console_scripts': [
             'ssh-unlocker=unlock:main',
