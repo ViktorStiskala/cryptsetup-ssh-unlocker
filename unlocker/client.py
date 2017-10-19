@@ -36,7 +36,11 @@ class ServerUnlocker:
         log.debug('SSH connecting', extra={'server': server_name})
         async with asyncssh.connect(**ssh_options) as conn:
             log.info('Unlocking %s', server_name, extra={'server': server_name})
-            await conn.run('cat > /lib/cryptsetup/passfifo', input=passphrase)
+            result = await conn.run('cat > /lib/cryptsetup/passfifo', input=passphrase)
+            if result.exit_status != 0:
+                log.warn('Unlocking %s failed: %s', server_name, result.stderr.strip(), extra={'server': server_name})
+            else:
+                log.info('Unlocked %s', server_name, extra={'server': server_name})
 
     async def unlock_server(self, config):
         host, port = config.get('host'), config.get('port')
