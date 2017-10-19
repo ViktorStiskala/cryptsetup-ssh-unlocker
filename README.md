@@ -102,6 +102,30 @@ startsecs=5
 stopwaitsecs=60
 ```
 
+# Systemd config
+
+If you don't want to add Supervisor as dependency:
+
+```ini
+[Unit]
+Description=Utility for unattended remote unlock of LUKS encrypted LVM
+After=network.target
+
+[Service]
+ExecStart=/root/ssh-unlocker/venv/bin/ssh-unlocker
+WorkingDirectory=/root/ssh-unlocker/
+Restart=always
+TimeoutStopSec=60
+
+# try to restart the service indefinitely (RestartSec * StartLimitBurst > StartLimitIntervalSec)
+RestartSec=1
+StartLimitBurst=20
+StartLimitIntervalSec=1
+
+[Install]
+WantedBy=multi-user.target
+```
+
 # Server configuration
 In order for this utility to work correctly, SSH daemon has to be installed into initial ramdisk.
 There are some tutorials, how to do that, such as [this one for Ubuntu](https://stinkyparkia.wordpress.com/2014/10/14/remote-unlocking-luks-encrypted-lvm-using-dropbear-ssh-in-ubuntu-server-14-04-1-with-static-ipst/).
