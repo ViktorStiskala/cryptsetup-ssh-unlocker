@@ -16,7 +16,7 @@ compromising a DNS server.
 
 Please also note that the server host keys are always stored on an unencrypted partition,
 so this script won't protect you against an attack with both physical access to the server and the IP address used for unlocking.
-To further limit the attack possibility, you should use monitoring and possibly disable ssh unlocker in the case of unexpected behavior.
+To further limit the attack possibility, you should use monitoring and possibly disable SSH unlocker in the case of unexpected behavior.
 
 Other possible security implications and solutions how to prevent them are beyond the scope of this documentation.
 
