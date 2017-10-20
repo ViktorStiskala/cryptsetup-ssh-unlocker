@@ -36,11 +36,11 @@ class ServerUnlocker:
         log.debug('SSH connecting', extra={'server': server_name})
         async with asyncssh.connect(**ssh_options) as conn:
             log.info('Unlocking %s', server_name, extra={'server': server_name})
-            result = await conn.run('cat > /lib/cryptsetup/passfifo', input=passphrase)
-            if result.exit_status != 0:
-                log.warn('Password write failed: %s', result.stderr.strip(), extra={'server': server_name})
-            else:
+            try:
+                await conn.run('cat > /lib/cryptsetup/passfifo', input=passphrase, check=True)
                 log.info('Password written', extra={'server': server_name})
+            except asyncssh.ProcessError as exc:
+                log.warning('Password write failed: %s', exc.stderr.strip(), extra={'server': server_name})
 
     async def unlock_server(self, config):
         host, port = config.get('host'), config.get('port')
