@@ -86,11 +86,38 @@ ssh_private_key_passphrase =
 known_hosts = known_hosts
 ```
 
-# Supervisor config
-[Supervisor](http://supervisord.org/) can be used to run this utility automatically and to restart it
-in case of any unexpected exceptions.
+# Starting automatically at system startup
 
-Example configuration file:
+In most scenarios ssh-unlocker should probably start automatically at system startup. You should also make sure, that the unlocker would be restarted in case of any unexpected exceptions. This can be done by a simple shell script or you can use one of more sophisticated solutions described below.
+
+## Systemd config
+
+Systemd is already pre-installed in most modern distribution, so using it should be only a matter of adding new configuration file. 
+
+Example configuration:
+```ini
+[Unit]
+Description=Utility for unattended remote unlock of LUKS encrypted LVM
+After=network.target
+
+[Service]
+ExecStart=/root/ssh-unlocker/venv/bin/ssh-unlocker
+WorkingDirectory=/root/ssh-unlocker/
+Restart=always
+TimeoutStopSec=60
+
+# try to restart the service indefinitely (RestartSec * StartLimitBurst > StartLimitIntervalSec)
+RestartSec=1
+StartLimitBurst=20
+StartLimitIntervalSec=1
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## Supervisor config
+If you're used to [Supervisor](http://supervisord.org/) or you don't want to use Systemd for some reason, here is a sample configuration file:
+
 ```ini
 [program:cryptsetup-ssh-unlocker]
 command=/root/ssh-unlocker/venv/bin/ssh-unlocker --logfile /var/log/ssh-unlocker
