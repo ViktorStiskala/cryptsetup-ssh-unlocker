@@ -10,9 +10,15 @@ keys from the servers being unlocked. Server authentication is performed during 
 against a `known_hosts` file.
 
 Server will be unlocked only when SSH is available on the specified IP address and port and if
-the fingerprint in the `known_hosts` file matches.
+the fingerprint in the `known_hosts` file matches. You should always use IP addresses in the
+host configuration rather than domain names to limit the attack possibility after
+compromising a DNS server.
 
-To limit the possible attack vector, you should use IP addresses in the host configuration rather than domain names.
+Please also note that the server host keys are always stored on an unencrypted partition,
+so this script won't protect you against an attack with both physical access to the server and the IP address used for unlocking.
+To further limit the attack possibility, you should use monitoring and possibly disable ssh unlocker in the case of unexpected behavior.
+
+Other possible security implications and solutions how to prevent them are beyond the scope of this documentation.
 
 ## Requirements
 
