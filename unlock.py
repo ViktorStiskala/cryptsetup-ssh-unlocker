@@ -32,6 +32,13 @@ def main():
                 sys.stderr.write('Invalid configuration. Section [{section}] is missing required argument "{arg}"\n'.format(section=section, arg=arg))
                 sys.exit(1)
 
+        # validate port number
+        try:
+            config.getint(section, 'port', fallback=None)
+        except ValueError:
+            sys.stderr.write('Invalid configuration. Invalid port config for server [{section}]\n'.format(section=section))
+            sys.exit(1)
+
     unlocker = ServerUnlocker([config[section] for section in config.sections()])
     unlocker.run_forever()
 
