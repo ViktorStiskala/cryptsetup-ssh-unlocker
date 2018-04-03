@@ -27,7 +27,7 @@ setup(
     url='https://github.com/ViktorStiskala/cryptsetup-ssh-unlocker',
     author='Viktor Stískala',
     author_email='viktor@stiskala.cz',
-    install_requires=['asyncssh>=1.11', 'bcrypt>=3.1'],
+    install_requires=['asyncssh>=1.11,<1.13', 'bcrypt>=3.1'],
     classifiers=[
         'Intended Audience :: System Administrators',
         'Operating System :: OS Independent',

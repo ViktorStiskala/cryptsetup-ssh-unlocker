@@ -43,7 +43,7 @@ class ServerUnlocker:
                 log.warning('Password write failed: %s', exc.stderr.strip(), extra={'server': server_name})
 
     async def unlock_server(self, config):
-        host, port = config.get('host'), config.get('port')
+        host, port = config.get('host'), config.getint('port')
 
         log.info('Starting unlocker loop', extra={'server': config.name})
         while True:
@@ -64,6 +64,8 @@ class ServerUnlocker:
                 log.debug('Connection refused', extra={'server': config.name})
             except asyncio.TimeoutError:
                 log.debug('Timeout error', extra={'server': config.name})
+            except asyncssh.DisconnectError as exc:
+                log.warning('Disconnect error: %s', exc, extra={'server': config.name})
             except OSError as exc:
                 log.warning('Connection error: %s', exc, extra={'server': config.name})
 
